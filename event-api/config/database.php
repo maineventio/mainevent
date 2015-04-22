@@ -48,7 +48,8 @@ return [
 
         'dev' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
+            'host'      => env('DB_HOST', '10.0.2.2'), // the host machine from homestead.
+            //'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'mainevent'),
             'username'  => env('DB_USERNAME', 'root'),
             'password'  => env('DB_PASSWORD', ''),

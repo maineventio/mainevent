@@ -5,9 +5,9 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "laravel/lumen-framework": "5.0.*",
+        "laravel/lumen-framework": "5.0.3",
         "vlucas/phpdotenv": "~1.0",
-        "aws/aws-sdk-php":
+        "aws/aws-sdk-php": "2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"

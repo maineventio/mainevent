@@ -4,6 +4,7 @@ use Closure;
 use Session;
 use Log;
 use Cache;
+use DB;
 
 
 class ValidateProject {
@@ -20,7 +21,7 @@ class ValidateProject {
      */
     public function handle($request, Closure $next)
     {
-        //Log::info('ValidateProject start');
+        Log::info('ValidateProject start');
         if (!Session::has('token')) {
             return response("Token error in ValidateProject", 400);
         }
@@ -47,7 +48,7 @@ class ValidateProject {
         }
         // Project is a database row record.  See http://laravel.com/docs/5.0/queries
         Session::put('project', $project);
-        //Log::info("ValidateProject, project:\n".print_r($project,true));
+        Log::info("ValidateProject, project:\n".print_r($project,true));
 
         // On to the next one!
         return $next($request);

@@ -32,11 +32,10 @@ return [
     'connections' => [
 
         'dev' => [
-            'driver' => 'sqs',
-            'key'    => 'your-public-key',
-            'secret' => 'your-secret-key',
-            'queue'  => 'your-queue-url',
-            'region' => 'us-east-1',
+            'driver' => 'database',
+            'table' => 'jobs',
+                        'queue' => 'default',
+                        'expire' => 60,
         ],
       'prod' => [
         'driver' => 'sqs',

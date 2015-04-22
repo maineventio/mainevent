@@ -10,14 +10,16 @@ use Illuminate\Contracts\Queue\ShouldBeQueued;
 class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 
 	use InteractsWithQueue, SerializesModels;
+    protected $payload;
 
 	/**
 	 * Create a new command instance.
 	 *
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($payload)
 	{
+        $this->payload = $payload;
 		//
 	}
 

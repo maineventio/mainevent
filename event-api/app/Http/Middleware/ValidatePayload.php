@@ -20,7 +20,7 @@ class ValidatePayload {
      */
     public function handle($request, Closure $next)
     {
-        //Log::info('ValidatePayload start');
+        Log::info('ValidatePayload start');
         if (!Session::has('payload')) {
             return response("Payload error in ValidatePayload", 400);
         }
@@ -54,8 +54,16 @@ class ValidatePayload {
         $properties = $payload['properties'];
         unset($properties['token']);
         Session::put('properties', $properties);
+        // Create a list of all of the meta / internal properties
+        $meta = array();
+        if (isset($payload['meta'])) {
+            $meta = $payload['meta'];
+        }
+        $meta['ts_received'] = time();
+        $meta['sender_ip'] = $request->ip();
+        Session::put('meta_properties', $meta);
         // on to the next stage
-        //Log::info("ValidatePayload, session:\n".print_r(Session::all(), true));
+        Log::info("ValidatePayload, session:\n".print_r(Session::all(), true));
         return $next($request);
     }
 
