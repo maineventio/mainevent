@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_DRIVER', 'dev'),
+    'default' => env('QUEUE_DRIVER', 'prod'),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,22 +30,19 @@ return [
     */
 
     'connections' => [
-
         'dev' => [
             'driver' => 'database',
             'table' => 'jobs',
-                        'queue' => 'default',
-                        'expire' => 60,
+            'queue' => 'default',
+            'expire' => 60,
         ],
-      'prod' => [
-        'driver' => 'sqs',
-        'key'    => 'your-public-key',
-        'secret' => 'your-secret-key',
-        'queue'  => 'your-queue-url',
-        'region' => 'us-east-1',
-      ],
-
-
+        'prod' => [
+            'driver' => 'sqs',
+            'key'    => 'AKIAJHX4A6CC6PZU4JAA',
+            'secret' => '+D4IJirIdzVBKpRFmIJOLKiX7C1rsRGsjccd3NyA',
+            'queue'  => 'https://sqs.us-west-1.amazonaws.com/853428466650/mainevent',
+            'region' => 'us-west-1',
+        ],
     ],
 
     /*

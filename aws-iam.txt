@@ -1,0 +1,6 @@
+ mainevent
+
+Access Key ID:
+AKIAJHX4A6CC6PZU4JAA
+Secret Access Key:
++D4IJirIdzVBKpRFmIJOLKiX7C1rsRGsjccd3NyA
