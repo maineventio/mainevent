@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'dev'),
+    'default' => env('DB_CONNECTION', 'prod'),
 
     /*
     |--------------------------------------------------------------------------
@@ -59,18 +59,18 @@ return [
             'timezone'  => '+00:00',
             'strict'    => false,
         ],
-      'prod' => [
-        'driver'    => 'mysql',
-        'host'      => env('DB_HOST', 'localhost'),
-        'database'  => env('DB_DATABASE', 'forge'),
-        'username'  => env('DB_USERNAME', 'forge'),
-        'password'  => env('DB_PASSWORD', ''),
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
-        'prefix'    => env('DB_PREFIX', ''),
-        'timezone'  => '+00:00',
-        'strict'    => false,
-      ],
+        'prod' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', 'mainevent.c6rwykkaurk5.us-west-1.rds.amazonaws.com'),
+            'database'  => env('DB_DATABASE', 'mainevent'),
+            'username'  => env('DB_USERNAME', 'master'),
+            'password'  => env('DB_PASSWORD', 'mainevent'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => env('DB_PREFIX', ''),
+            'timezone'  => '+00:00',
+            'strict'    => false,
+        ],
 
 
     ],

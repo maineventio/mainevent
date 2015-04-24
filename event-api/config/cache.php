@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_DRIVER', 'dev'),
+    'default' => env('CACHE_DRIVER', 'prod'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,12 +32,11 @@ return [
             'driver' => 'file',
             'path'   => storage_path('framework/cache'),
         ],
-
         'prod' => [
             'driver'  => 'memcached',
             'servers' => [
                 [
-                    'host' => env('MEMCACHED_HOST', '127.0.0.1'), 'port' => env('MEMCACHED_PORT', 11211), 'weight' => 100
+                    'host' => env('MEMCACHED_HOST', 'eventcache.anallw.cfg.usw1.cache.amazonaws.com'), 'port' => env('MEMCACHED_PORT', 11211), 'weight' => 100
                 ],
             ],
         ],
