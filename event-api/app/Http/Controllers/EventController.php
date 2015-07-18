@@ -50,5 +50,48 @@ class EventController extends Controller
             200);
     }
 
+    /**
+     * PUMP AN EVENT FROM SQS TO DYNAMODB
+     * Handle a single event via HTTP
+     * Triggered by the EBS Worker Tier queue daemon
+     * http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html
+     */
+    public function event_pump(Request $request) {
+
+        /**
+         * HEY YOU
+         * This is for using the worker tier daemon, which turns SQS messages into HTTP hits.
+         * It would need a route, but doesn't have one.
+         * I'm moving the interesting code to the NewEvent::handle(), so that we can
+         * also use Laravel's queue handling
+         * http://laravel.com/docs/5.0/queues#running-the-queue-listener
+         */
+
+
+        /**
+         * Event IDs
+         * We will default to using the SQS message ID as the event ID
+         * https://aws.amazon.com/articles/Amazon-SQS/1343#05
+         *
+         * Look at using Conditional Writes, we dont want to overwrite any event record
+         * which will happen if we PutItem on the same ID.
+         * https://aws.amazon.com/articles/Amazon-SQS/1343#05
+         * Condition expression: attribute_not_exists(RelatedItems)
+         * http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Modifying.html#Expressions.Modifying.ConditionalWrites
+         *
+         */
+
+        /*
+        $msg_id = $request->header('X-Aws-Sqsd-Msgid');
+        $post_data = $request->getContent(); // http://www.codingswag.com/get-raw-post-data-in-laravel/
+
+        // use the AWS Laravel thing
+        // http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-dynamodb.html#adding-items
+        $dynamodb = App::make('aws')->get('dynamodb');
+        $dynamodb->putItem(); // TODO
+
+        */
+    }
+
 
 }

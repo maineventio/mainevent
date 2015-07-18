@@ -30,7 +30,8 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
-		//
+		// NOTHING HERE, EVENT HANDLED IN EVENT_API
+
 	}
 
 }

@@ -17,3 +17,4 @@ $app->get('/', function() use ($app) {
 
 //$app->get('/track',['middleware' => 'decode_data|validate_payload|validate_project', 'App\Http\Controllers\EventController@event_new']);
 $app->get('/track','App\Http\Controllers\EventController@event_new');
+$app->get('/pop','App\Http\Controllers\EventController@event_pump');
