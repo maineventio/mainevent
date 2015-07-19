@@ -6,6 +6,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
+use Aws\DynamoDb\Marshaler;
 
 class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 
@@ -30,8 +31,19 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
-		// NOTHING HERE, EVENT HANDLED IN EVENT_API
+        Log::info("NewEvent::handle: pumping event to DB store:\n".print_r($this->payload,true));
+        // use the AWS Laravel thing
+        // http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-dynamodb.html#adding-items
+        $dynamodb = App::make('aws')->get('dynamodb');
+        $marshaler = new Marshaler();
+        // TODO: marshal
 
-	}
-
+        $putArgs = array(
+            'TableName' => 'events',
+            'Item' => $marshaler->marshalJson(json_encode($this->payload))
+        );
+        Log::info("NewEvent::handle: about to putItem:\n".print_r($putArgs,true));
+        $result = $dynamodb->putItem($putArgs);
+        Log::info("NewEvent::handle: putItem result:\n".print_r($result,true));
+    }
 }

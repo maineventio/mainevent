@@ -85,10 +85,6 @@ class EventController extends Controller
         $msg_id = $request->header('X-Aws-Sqsd-Msgid');
         $post_data = $request->getContent(); // http://www.codingswag.com/get-raw-post-data-in-laravel/
 
-        // use the AWS Laravel thing
-        // http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-dynamodb.html#adding-items
-        $dynamodb = App::make('aws')->get('dynamodb');
-        $dynamodb->putItem(); // TODO
 
         */
     }

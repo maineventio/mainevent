@@ -61,6 +61,11 @@ class ValidatePayload {
         }
         $meta['ts_received'] = time();
         $meta['sender_ip'] = $request->ip();
+        if (!isset($payload['timestamp'])) {
+            // default event timestamp to receive time
+            $payload['timestamp'] = $meta['ts_received'];
+            Session::put('payload', $payload); // re-save.
+        }
         Session::put('meta_properties', $meta);
         // on to the next stage
         Log::info("ValidatePayload, session:\n".print_r(Session::all(), true));
