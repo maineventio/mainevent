@@ -6,6 +6,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
+use AWS;
 use Aws\DynamoDb\Marshaler;
 use App;
 use Log;
@@ -36,7 +37,7 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
         Log::info("NewEvent::handle: pumping event to DB store:\n".print_r($this->payload,true));
         // use the AWS Laravel thing
         // http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-dynamodb.html#adding-items
-        $dynamodb = App::make('aws')->get('dynamodb');
+        $dynamodb = AWS::createClient('dynamodb');
         $marshaler = new Marshaler();
         // TODO: marshal
 

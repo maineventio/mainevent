@@ -85,7 +85,7 @@ $app->routeMiddleware([
 
 // $app->register('App\Providers\AppServiceProvider');
 $app->register('Aws\Laravel\AwsServiceProvider');
-class_alias('Aws\Laravel\AwsServiceProvider', 'AWS');
+class_alias('Aws\Laravel\AwsFacade', 'AWS');
 
 /*
 |--------------------------------------------------------------------------
