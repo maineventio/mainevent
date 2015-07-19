@@ -15,6 +15,9 @@ $app->get('/', function() use ($app) {
     return $app->welcome();
 });
 
-//$app->get('/track',['middleware' => 'decode_data|validate_payload|validate_project', 'App\Http\Controllers\EventController@event_new']);
-$app->get('/track','App\Http\Controllers\EventController@event_new');
+// Prefer to use route-based middleware!
+$app->get('/track',
+    ['middleware' => 'decode_data|validate_payload|validate_project',
+    'App\Http\Controllers\EventController@event_new']);
+//$app->get('/track','App\Http\Controllers\EventController@event_new');
 $app->get('/pop','App\Http\Controllers\EventController@event_pump');

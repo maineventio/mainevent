@@ -15,7 +15,9 @@ Dotenv::load(__DIR__.'/../');
 |
 */
 
-$app = new Laravel\Lumen\Application;
+$app = new Laravel\Lumen\Application(
+    realpath(__DIR__.'/../')
+);
 $app->withFacades();
 
 // $app->withEloquent();
@@ -52,24 +54,23 @@ $app->singleton(
 |
 */
 
+/*
+ * JM: this works, but since we're moving the Event::pump to this project,
+ * I want middleware configured per-route, which caused issues previously.
+ */
+/*
 $app->middleware([
     'App\Http\Middleware\DecodeData',
     'App\Http\Middleware\ValidatePayload',
     'App\Http\Middleware\ValidateProject',
-//     // 'Illuminate\Cookie\Middleware\EncryptCookies',
-//     // 'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-//     // 'Illuminate\Session\Middleware\StartSession',
-//     // 'Illuminate\View\Middleware\ShareErrorsFromSession',
-//     'Laravel\Lumen\Http\Middleware\VerifyCsrfToken',
 ]);
+*/
 
-/*
 $app->routeMiddleware([
     'decode_data' => 'App\Http\Middleware\DecodeData',
     'validate_payload' => 'App\Http\Middleware\ValidatePayload',
     'validate_project' => 'App\Http\Middleware\ValidateProject',
 ]);
-*/
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,8 @@ $app->routeMiddleware([
 */
 
 // $app->register('App\Providers\AppServiceProvider');
+$app->register('Aws\Laravel\AwsServiceProvider');
+class_alias('Aws\Laravel\AwsServiceProvider', 'AWS');
 
 /*
 |--------------------------------------------------------------------------
