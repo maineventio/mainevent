@@ -7,6 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
 use Aws\DynamoDb\Marshaler;
+use App;
+use Log;
 
 class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 
