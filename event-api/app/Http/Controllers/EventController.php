@@ -34,6 +34,7 @@ class EventController extends Controller
         $project = Session::get('project');
         $payload = [
             'project_id' => $project->id,
+            'event' => Session::get('event'),
             'event_name' => Session::get('event_name'),
             'properties' => Session::get('properties'),
             'meta' => $meta,

@@ -22,6 +22,7 @@ class ValidateProject {
     public function handle($request, Closure $next)
     {
         Log::info('ValidateProject start');
+        $cacheMinutes = 15;
         if (!Session::has('token')) {
             return response("Token error in ValidateProject", 400);
         }
@@ -39,8 +40,7 @@ class ValidateProject {
             $project = DB::table('projects')->where('token', $token)->first();
             if (isset($project)) {
                 // Cache the found result
-                $minutes = 15;
-                Cache::add($token_cachekey, $project, $minutes);
+                Cache::add($token_cachekey, $project, $cacheMinutes);
             }
         }
         if (!isset($project)) {
@@ -49,6 +49,36 @@ class ValidateProject {
         // Project is a database row record.  See http://laravel.com/docs/5.0/queries
         Session::put('project', $project);
         Log::info("ValidateProject, project:\n".print_r($project,true));
+
+        // Same approach for the event - check cache, ensure exists in DB.
+        // event ID will be used in our data store hash key.
+        $eventTable = 'project_events';
+        $eventName = Session::get('event_name');
+        $event_cachekey = "event-token-".$project->id."-".$eventName;
+        $event = NULL;
+        if (Cache::has($event_cachekey)) {
+            $event = Cache::get($event_cachekey);
+        }
+        else {
+            $event = DB::table($eventTable)->where('project_id', $project->id)->where('name',$eventName)->first();
+            if (!isset($event)) {
+                // record the new event
+                DB::table($eventTable)->insert(
+                    ['project_id' => $project->id, 'name' => $eventName, 'first_seen' => time()]
+                );
+                // re-fetch
+                $event = DB::table($eventTable)->where('project_id', $project->id)->where('event_name',$eventName)->first();
+            }
+            if (isset($event)) {
+                // cache the event record
+                Cache::add($event_cachekey, $event, $cacheMinutes);
+            }
+        }
+        if (!isset($event)) {
+            return response("Error fetching/creating event record for this event name", 500);
+        }
+        Session::put('event', $event);
+        Log::info("ValidateProject, event:\n".print_r($event,true));
 
         // On to the next one!
         return $next($request);
