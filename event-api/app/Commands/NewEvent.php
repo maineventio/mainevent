@@ -34,13 +34,14 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
+        if (!isset($this->payload['timestamp'])) {
+	    $this->payload['timestamp'] = $this->payload['meta']['ts_received'];
+	}
         Log::info("NewEvent::handle: pumping event to DB store:\n".print_r($this->payload,true));
         // use the AWS Laravel thing
         // http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-dynamodb.html#adding-items
         $dynamodb = AWS::createClient('dynamodb');
         $marshaler = new Marshaler();
-        // TODO: marshal
-
         $putArgs = array(
             'TableName' => 'events',
             'Item' => $marshaler->marshalJson(json_encode($this->payload))
