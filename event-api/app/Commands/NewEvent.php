@@ -34,10 +34,8 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
-        if (!isset($this->payload['timestamp'])) {
-	    $this->payload['timestamp'] = $this->payload['meta']['ts_received'];
-	}
-        Log::info("NewEvent::handle: pumping event to DB store:\n".print_r($this->payload,true));
+        $this->ensureDynamoKeys();
+        //Log::info("NewEvent::handle: pumping event to DB store:\n".print_r($this->payload,true));
         // use the AWS Laravel thing
         // http://docs.aws.amazon.com/aws-sdk-php/v2/guide/service-dynamodb.html#adding-items
         $dynamodb = AWS::createClient('dynamodb');
@@ -49,5 +47,22 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
         Log::info("NewEvent::handle: about to putItem:\n".print_r($putArgs,true));
         $result = $dynamodb->putItem($putArgs);
         Log::info("NewEvent::handle: putItem result:\n".print_r($result,true));
+    }
+
+    /**
+     * Private, check or update the payload keys needed for DynamoDB hash and range keys.
+     * Make changes here as we update our table indexing.
+     */
+    private function ensureDynamoKeys()
+    {
+        if (!isset($this->payload['timestamp'])) {
+            $this->payload['timestamp'] = $this->payload['meta']['ts_received'];
+        }
+        // Very good: http://tales.timehop.com/post/113816730211/one-year-of-dynamodb-at-timehop
+        // Using '20150720:123' where second number is the unique ID of the event_name, which is
+        // project-specific.
+        // TODO: careful about timezone on this date.
+        $eventHash = date("Ymd").':'.$this->payload['event']['id'];
+        $this->payload['event_hash'] = $eventHash;
     }
 }
