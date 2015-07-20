@@ -67,7 +67,7 @@ class ValidateProject {
                     ['project_id' => $project->id, 'name' => $eventName, 'first_seen' => time()]
                 );
                 // re-fetch
-                $event = DB::table($eventTable)->where('project_id', $project->id)->where('event_name',$eventName)->first();
+                $event = DB::table($eventTable)->where('project_id', $project->id)->where('name',$eventName)->first();
             }
             if (isset($event)) {
                 // cache the event record
