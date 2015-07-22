@@ -62,7 +62,7 @@ class NewEvent extends Command implements SelfHandling, ShouldBeQueued {
         // Using '20150720:123' where second number is the unique ID of the event_name, which is
         // project-specific.
         // TODO: careful about timezone on this date.
-        $eventHash = date("Ymd").':'.$this->payload['event']['id'];
+        $eventHash = date("Ymd").':'.$this->payload['event']->id;
         $this->payload['event_hash'] = $eventHash;
     }
 }
