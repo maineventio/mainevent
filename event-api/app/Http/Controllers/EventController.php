@@ -51,7 +51,7 @@ class EventController extends Controller
         $kinesis->putRecord([
             'StreamName' => 'mainevent-incoming',
             'PartitionKey' => $event->id,
-            'Date' => $payload
+            'Date' => json_encode($payload)
         ]);
         Log::info('event_new pushed to Kinesis stream');
 
