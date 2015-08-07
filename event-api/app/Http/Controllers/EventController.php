@@ -11,6 +11,7 @@ use Session;
 use Log;
 use Queue;
 use App\Commands\NewEvent;
+use AWS;
 
 // Useful http status codes for REST: http://www.restapitutorial.com/httpstatuscodes.html
 class EventController extends Controller
@@ -32,9 +33,10 @@ class EventController extends Controller
 
         // Push onto SQS queue
         $project = Session::get('project');
+        $event = Session::get('event');
         $payload = [
             'project_id' => $project->id,
-            'event' => Session::get('event'),
+            'event' => $event,
             'event_name' => Session::get('event_name'),
             'properties' => Session::get('properties'),
             'meta' => $meta,
@@ -43,8 +45,17 @@ class EventController extends Controller
 
         // TODO: error check?
         Queue::push(new NewEvent($payload));
-        Log::info('event_new done');
+        Log::info('event_new pushed to queue');
 
+        $kinesis = AWS::createClient('kinesis');
+        $kinesis->putRecord([
+            'StreamName' => 'mainevent-incoming',
+            'PartitionKey' => $event->id,
+            'Date' => $payload
+        ]);
+        Log::info('event_new pushed to Kinesis stream');
+
+        Log::info('event_new done');
         // Say thanks!
         return response(
             "<< Event recorded >>\n\nThank you, thank you, thank you, you're far too kind\nHold your applause, this is your song not mines.'\n -- Jay Z: http://genius.com/Jay-z-thank-you-lyrics",
