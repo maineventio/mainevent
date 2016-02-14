@@ -43,10 +43,27 @@ class EventController extends Controller
         ];
         Log::info('event_new, pushing payload:\n'.print_r($payload,true));
 
+        /*
+         * This Queue::push is if we expect the message to be handled by other Laravel/Lumen code,
+         * for example an early iteration pushed the event to the queue, and there was a commandline
+         * pump that moved them from the queue to DynamoDB.
+         * Current (Feb 2016) iteration is to have LogStash pulling from the queue, so we want to push our
+         * JSON, not the serialized NewEvent object.
+         */
+        /*
         // TODO: error check?
         Queue::push(new NewEvent($payload));
+        */
+        $sqs = AWS::createClient('sqs');
+        $sqs->sendMessage([
+            'QueueUrl' => env('SQS_URL'),
+            'MessageBody' => json_encode($payload),
+        ]);
+
         Log::info('event_new pushed to queue');
 
+        // Disable Kinesis for now, this is experimental (as in, compare against SQS or allow add'l AWS integrations).
+        /*
         $kinesis = AWS::createClient('kinesis');
         $kinesis->putRecord([
             'StreamName' => 'mainevent-incoming',
@@ -54,6 +71,7 @@ class EventController extends Controller
             'Data' => $payload
         ]);
         Log::info('event_new pushed to Kinesis stream');
+        */
 
         Log::info('event_new done');
         // Say thanks!
