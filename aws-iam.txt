@@ -1,6 +1,0 @@
- mainevent
-
-Access Key ID:
-***REMOVED***
-Secret Access Key:
-***REMOVED***
