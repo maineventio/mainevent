@@ -38,8 +38,8 @@ return [
         ],
         'prod' => [
             'driver' => 'sqs',
-            'key'    => 'AKIAJHX4A6CC6PZU4JAA',
-            'secret' => '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',
+            'key'    => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'queue'  => 'https://sqs.us-west-1.amazonaws.com/853428466650/mainevent',
             'region' => 'us-west-1',
         ],
