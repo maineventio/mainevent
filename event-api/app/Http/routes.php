@@ -17,7 +17,7 @@ $app->get('/', function() use ($app) {
 
 // Prefer to use route-based middleware!
 $app->get('/track',
-    ['middleware' => 'decode_data|validate_payload|validate_project', function() { 
+    ['middleware' => 'cors|decode_data|validate_payload|validate_project', function() { 
       $controller = new App\Http\Controllers\EventController;
       $controller->event_new();
     }]);
