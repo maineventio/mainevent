@@ -70,6 +70,8 @@ $app->routeMiddleware([
     'decode_data' => 'App\Http\Middleware\DecodeData',
     'validate_payload' => 'App\Http\Middleware\ValidatePayload',
     'validate_project' => 'App\Http\Middleware\ValidateProject',
+    /*'cors' => 'palanik\lumen\Middleware\LumenCors',*/
+    'cors' => 'App\Http\Middleware\CORS',
 ]);
 
 /*

@@ -61,7 +61,10 @@ return [
         ],
         'prod' => [
             'driver'    => 'mysql',
+/*
             'host'      => env('DB_HOST', 'mainevent.c6rwykkaurk5.us-west-1.rds.amazonaws.com'),
+*/
+            'host'      => env('DB_HOST', 'mainevent.cwxwyoaj7q5z.us-east-1.rds.amazonaws.com'),
             'database'  => env('DB_DATABASE', 'mainevent'),
             'username'  => env('DB_USERNAME', 'master'),
             'password'  => env('DB_PASSWORD', 'mainevent'),
