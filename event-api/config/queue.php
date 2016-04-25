@@ -40,8 +40,8 @@ return [
             'driver' => 'sqs',
             'key'    => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'queue'  => 'https://sqs.us-west-1.amazonaws.com/853428466650/mainevent',
-            'region' => 'us-west-1',
+            'queue'  => 'https://sqs.us-east-1.amazonaws.com/853428466650/mainevent',
+            'region' => 'us-east-1',
         ],
     ],
 
