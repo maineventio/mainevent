@@ -98,6 +98,7 @@ YMMV, love to see someone try it out :)
 ### Querying & Combining: Druid
 Druid in fact gives us the kind of distributed column-store system for rapid interactive queries that Amplitude developed [in their 2016 follow-up post](https://amplitude.com/blog/2016/05/25/nova-architecture-understanding-user-behavior/), and appears to be the perfect system that will bridge the real-time ingestion and state manegement of Spark to the fast queries of user-facing reporting.  And it comes with a Spark plugin for just such an occasion.
 > Druid's focus is on extremely low latency queries, and is ideal for powering applications used by thousands of users, and where each query must return fast enough such that users can interactively explore through data.
+
 * [Druid](http://druid.io/)
 * [Combining Druid and Spark: Interactive and flexible analytics at scale](https://www.linkedin.com/pulse/combining-druid-spark-interactive-flexible-analytics-scale-butani)
 * [Druid vs Spark](http://druid.io/docs/latest/comparisons/druid-vs-spark.html)
