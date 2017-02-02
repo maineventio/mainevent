@@ -1,0 +1,107 @@
+# Much inspiration from:
+# Laradock: https://github.com/laradock/laradock/blob/master/docker-compose.yml
+# Spark-Kafka-Docker demo https://github.com/antlypls/spark-kafka-docker-demo
+
+version: '2'
+
+services:
+    ###----- Launch this one, all else falls into place (I wish).
+    mainevent:
+        image: tianon/true
+        volumes:
+            - ../event-api:/var/www/event-api
+            - ../dashboard:/var/www/dashboard
+        links:
+            - kafka
+            - spark
+            #- workspace
+            #- php-fpm
+            - mysql
+            #- nginx
+    ###----- Kafka is the message queues to store incoming events for procesing
+    kafka:
+        image: antlypls/kafka:0.10.0.1
+        environment:
+            - KAFKA=localhost:9092
+            - ZOOKEEPER=localhost:2181
+        expose:
+            - "2181"
+            - "9092"
+    ###----- Spark is the code of our data processing system
+    spark:
+        image: antlypls/spark:1.6.2
+        command: bash
+        volumes:
+            - ./spark/target/scala-2.10:/app
+    workspace:
+        build:
+            context: ./workspace
+            args:
+                - INSTALL_XDEBUG=true
+                - INSTALL_YARN=false
+                - COMPOSER_GLOBAL_INSTALL=true
+                - INSTALL_WORKSPACE_SSH=true
+                - PUID=1000
+                - PGID=1000
+                - YARN_VERSION=latest
+                - TZ=America/Vancouver
+        volumes_from:
+            - mainevent
+        extra_hosts:
+            # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
+            - "dockerhost:10.0.75.1"
+        ports:
+           - "2222:22"
+        tty: true
+    php-fpm:
+        build:
+            context: ./php-fpm
+            args:
+                - INSTALL_XDEBUG=true
+        volumes_from:
+            - mainevent
+        expose:
+            - "9000"
+        extra_hosts:
+            # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
+            - "dockerhost:10.0.75.1"
+        environment:
+            # IMPORTANT: Set the Remote Interpreter entry matching name to `laravel`
+            - PHP_IDE_CONFIG=serverName=laravel
+
+    nginx:
+        build:
+            context: ./nginx
+            args:
+                - PHP_UPSTREAM=php-fpm
+        volumes_from:
+            - mainevent
+        volumes:
+            - ./logs/nginx/:/var/log/nginx
+            - ./nginx/sites/:/etc/nginx/sites-available
+        ports:
+            - "80:80"
+            - "443:443"
+
+    mysql:
+        build:
+            context: ./mysql
+            args:
+                - MYSQL_DATABASE=homestead
+                - MYSQL_USER=homestead
+                - MYSQL_PASSWORD=secret
+                - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - mysql:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+
+### Volumes Setup ###########################################
+
+volumes:
+    mysql:
+        driver: "local"
+
+#    sessions:    ## nothing is connected to this (- ./data/sessions:/sessions)
+#        driver: "local"

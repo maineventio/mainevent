@@ -1,0 +1,6 @@
+[submodule "event-api"]
+	path = event-api
+	url = git@github.com:maineventio/event-api.git
+[submodule "dashboard"]
+	path = dashboard
+	url = git@github.com:maineventio/dashboard.git
