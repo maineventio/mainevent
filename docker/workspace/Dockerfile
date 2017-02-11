@@ -119,23 +119,19 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
 COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/xdebug.ini
 
 #####################################
-# ssh:
+# GitHub and SSH keys
 #####################################
-ARG INSTALL_WORKSPACE_SSH=false
-ENV INSTALL_WORKSPACE_SSH ${INSTALL_WORKSPACE_SSH}
 
-ADD insecure_id_rsa /tmp/id_rsa
-ADD insecure_id_rsa.pub /tmp/id_rsa.pub
+USER root
 
-RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
+# Will be used both for SSHing to the host, and for GitHub
+ADD ~/.ssh/id_rsa /root/.ssh/id_rsa
+ADD ~/.ssh/id_rsa.pub /root/.ssh/id_rsa.pub
+RUN \
     rm -f /etc/service/sshd/down && \
-    cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
-        && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
-        && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
-        && rm -f /tmp/id_rsa* \
-        && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
-    && chmod 400 /root/.ssh/id_rsa \
-;fi
+    cat /root/.ssh/d_rsa.pub >> /root/.ssh/authorized_keys && \
+    chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub && \
+    chmod 400 /root/.ssh/id_rsa
 
 USER laradock
 
