@@ -11,13 +11,6 @@ services:
         volumes:
             - ../event-api:/var/www/event-api
             - ../dashboard:/var/www/dashboard
-        links:
-            - kafka
-            - spark
-            #- workspace
-            #- php-fpm
-            - mysql
-            #- nginx
     ###----- Kafka is the message queues to store incoming events for procesing
     kafka:
         image: antlypls/kafka:0.10.0.1
@@ -30,9 +23,11 @@ services:
     ###----- Spark is the code of our data processing system
     spark:
         image: antlypls/spark:1.6.2
-        command: bash
+        command: tail -f /dev/null # keep running w/o a daemon...
         volumes:
             - ./spark/target/scala-2.10:/app
+        links:
+            - kafka
     workspace:
         build:
             context: ./workspace
@@ -53,6 +48,9 @@ services:
         ports:
            - "2222:22"
         tty: true
+        links:
+            - mysql
+            - kafka
     php-fpm:
         build:
             context: ./php-fpm
@@ -62,13 +60,15 @@ services:
             - mainevent
         expose:
             - "9000"
+        links:
+            - mysql
+            - kafka
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
             - "dockerhost:10.0.75.1"
         environment:
             # IMPORTANT: Set the Remote Interpreter entry matching name to `laravel`
             - PHP_IDE_CONFIG=serverName=laravel
-
     nginx:
         build:
             context: ./nginx
@@ -82,7 +82,8 @@ services:
         ports:
             - "80:80"
             - "443:443"
-
+        links:
+            - php-fpm
     mysql:
         build:
             context: ./mysql
