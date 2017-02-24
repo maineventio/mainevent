@@ -40,17 +40,20 @@ services:
                 - PGID=1000
                 - YARN_VERSION=latest
                 - TZ=America/Vancouver
-        volumes_from:
-            - mainevent
+        command: cd /var/www/event-api && cp .env.docker .env && composer install
+        command: cd /var/www/dashboard && cp .env.docker .env && composer install && bower install
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
             - "dockerhost:10.0.75.1"
         ports:
            - "2222:22"
         tty: true
+        volumes_from:
+            - mainevent
+        depends_on:
+            - mainevent
         links:
             - mysql
-            - kafka
     php-fpm:
         build:
             context: ./php-fpm
@@ -106,3 +109,5 @@ volumes:
 
 #    sessions:    ## nothing is connected to this (- ./data/sessions:/sessions)
 #        driver: "local"
+
+
