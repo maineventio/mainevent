@@ -60,7 +60,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 #####################################
 
 # Add the composer.json
-#COPY ./composer.json /home/laradock/.composer/composer.json
+COPY ./composer.json /home/laradock/.composer/composer.json
 
 # Make sure that ~/.composer belongs to laradock
 RUN chown -R laradock:laradock /home/laradock/.composer
@@ -199,14 +199,6 @@ RUN apt-get install -y telnet curl
 #Need Node and NPM
 RUN apt-get install -y nodejs npm && npm install -g npm bower
 RUN ln -s /usr/bin/nodejs /usr/bin/node
-
-# Run composer install on our two directories
-RUN cd /var/www/event-api && \
-    cp .env.docker .env && \
-    composer install && \
-    bower install
-RUN cd /var/www/dashboard && cp .env.docker .env && composer install
-
 
 #
 #--------------------------------------------------------------------------
