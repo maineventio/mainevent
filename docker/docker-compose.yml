@@ -17,8 +17,9 @@ services:
         environment:
             - KAFKA=localhost:9092
             - ZOOKEEPER=localhost:2181
+        ports:
+            - "2181:2181"
         expose:
-            - "2181"
             - "9092"
     ###----- Spark is the code of our data processing system
     spark:
@@ -28,32 +29,6 @@ services:
             - ./spark/target/scala-2.10:/app
         links:
             - kafka
-    workspace:
-        build:
-            context: ./workspace
-            args:
-                - INSTALL_XDEBUG=true
-                - INSTALL_YARN=false
-                - COMPOSER_GLOBAL_INSTALL=true
-                - INSTALL_WORKSPACE_SSH=true
-                - PUID=1000
-                - PGID=1000
-                - YARN_VERSION=latest
-                - TZ=America/Vancouver
-        command: cd /var/www/event-api && cp .env.docker .env && composer install
-        command: cd /var/www/dashboard && cp .env.docker .env && composer install && bower install
-        extra_hosts:
-            # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
-        ports:
-           - "2222:22"
-        tty: true
-        volumes_from:
-            - mainevent
-        depends_on:
-            - mainevent
-        links:
-            - mysql
     php-fpm:
         build:
             context: ./php-fpm
@@ -64,7 +39,7 @@ services:
         expose:
             - "9000"
         links:
-            - mysql
+#            - mysql
             - kafka
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
@@ -87,18 +62,18 @@ services:
             - "443:443"
         links:
             - php-fpm
-    mysql:
-        build:
-            context: ./mysql
-            args:
-                - MYSQL_DATABASE=homestead
-                - MYSQL_USER=homestead
-                - MYSQL_PASSWORD=secret
-                - MYSQL_ROOT_PASSWORD=root
-        volumes:
-            - mysql:/var/lib/mysql
-        ports:
-            - "3306:3306"
+#    mysql:
+#        build:
+#            context: ./mysql
+#            args:
+#                - MYSQL_DATABASE=homestead
+#                - MYSQL_USER=homestead
+#                - MYSQL_PASSWORD=secret
+#                - MYSQL_ROOT_PASSWORD=root
+#        volumes:
+#            - mysql:/var/lib/mysql
+#        ports:
+#            - "3306:3306"
 
 
 ### Volumes Setup ###########################################
@@ -106,8 +81,4 @@ services:
 volumes:
     mysql:
         driver: "local"
-
-#    sessions:    ## nothing is connected to this (- ./data/sessions:/sessions)
-#        driver: "local"
-
 
