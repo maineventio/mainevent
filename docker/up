@@ -1,4 +1,6 @@
 #!/bin/sh
 
 valet stop
-docker-compose up -d mainevent workspace nginx php-fpm kafka spark
+#docker-compose up -d mainevent workspace nginx php-fpm kafka spark
+docker-compose up -d mainevent nginx php-fpm kafka 
+#docker run -d -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 spotify/kafka
