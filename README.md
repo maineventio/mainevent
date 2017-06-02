@@ -40,24 +40,7 @@ Find me: [@jmagnuss on Twitter](http://twitter.com/jmagnuss), [LinkedIn](http://
 or email me directly, my GitHub username is my GMail address.
 
 ## Design & Architecture
-
-### Approach
-There are a million ways to implement event tracking.  MainEvent takes a minimum-code approach and seeks to
-use as many off the shelf products as possible, especially AWS managed services, for two reasons:
-* AWS managed services mean minimum maintenance.  Don't task your DevOps guy (hey @rlawrie!) with maintaining Memcache or Elastic Search, use AWS and forget about it.
-* AWS products have ways of fitting together easily.  If you want to also have your MainEvent data pumped into a RedShift database for querying or another product, that can be turned on with well documented options.
-
-The code for the reporting dashboard is in Laravel PHP, which is sublime to work with, and continues the minimal-code approach.
-"Why PHP?  ____ is much faster for this!" Because PHP is universally understood, and Laravel is genius for web apps like the dashboard.
-Glue pieces in MainEvent, like ETL scripts, should be done in whatever is best supported by the tools and performs the best.
-There is some Node.js, some shell scripts, etc...
-
-MainEvent is always a work in progress, and we are experimenting to find the best sequence of products and systems for our goals.
-We document the design and the choices made on the [Architecture & Design](http://TODO) wiki page.
-
-### Basic Flow
-
-##
+See [Decisions](doc/decisions.md)
 
 
 
