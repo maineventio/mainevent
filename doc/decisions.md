@@ -58,6 +58,8 @@ The nice thing about this area is, if we don't like Minio we can swap out that c
 * [Article on Minio](http://www.theregister.co.uk/2016/12/21/minio_microserever_aims_for_object_world_domination/)
 * [Minio GitHub](https://github.com/minio/minio)
 
+_In many use cases, we could also just rely on existing HDFS clusters_
+
 ### Dashboard, project management, reporting: Laravel
 Laravel is a dream to develop in, has a huge active community and a mammoth library available thanks to Symfony.  For standard tasks like project creation, team invitations, etc... we will be relying on Laravel.  
 
@@ -102,6 +104,8 @@ Druid in fact gives us the kind of distributed column-store system for rapid int
 * [Druid](http://druid.io/)
 * [Combining Druid and Spark: Interactive and flexible analytics at scale](https://www.linkedin.com/pulse/combining-druid-spark-interactive-flexible-analytics-scale-butani)
 * [Druid vs Spark](http://druid.io/docs/latest/comparisons/druid-vs-spark.html)
+
+*Also check out: https://github.com/filodb/FiloDB*
 
 ### Reporting
 Things to check out:
